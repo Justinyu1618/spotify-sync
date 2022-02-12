@@ -2,7 +2,8 @@ const express = require("express");
 const dotenv = require("dotenv");
 const axios = require("axios");
 const { v4: uuidv4 } = require("uuid");
-
+const http = require("http");
+const socket = require("./socket");
 const port = 5000;
 
 dotenv.config();
@@ -12,7 +13,7 @@ const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 
 const app = express();
 
-var access_token = "";
+const accessTokens = {};
 
 function getHeaders() {
   return {
@@ -49,13 +50,12 @@ function handleErrors(error) {
 app.get("/auth/login", (req, res) => {
   console.log("LOGIN");
   const scope = "streaming user-read-email user-read-private";
-  const state = uuidv4();
   const auth_query_parameters = new URLSearchParams({
     response_type: "code",
     client_id: CLIENT_ID,
     scope: scope,
     redirect_uri: "http://localhost:3000/auth/callback",
-    state: state,
+    state: req.query.uuid,
   });
 
   res.redirect(
@@ -67,6 +67,8 @@ app.get("/auth/login", (req, res) => {
 app.get("/auth/callback", (req, res) => {
   console.log("CALLBACK");
   const code = req.query.code;
+  const uuid = req.query.state;
+  console.log(code, uuid);
   const requestBody = new URLSearchParams({
     code: code,
     redirect_uri: "http://localhost:3000/auth/callback",
@@ -82,7 +84,8 @@ app.get("/auth/callback", (req, res) => {
     })
     .then((resp) => {
       if (resp.status === 200) {
-        access_token = resp.data.access_token;
+        accessTokens[uuid] = resp.data.access_token;
+        // access_token = resp.data.access_token;
         res.redirect("/");
       }
     })
@@ -92,8 +95,10 @@ app.get("/auth/callback", (req, res) => {
 });
 
 app.get("/auth/token", (req, res) => {
-  console.log("GETTING TOKEN");
-  res.json({ access_token: access_token });
+  console.log("GETTING TOKEN", accessTokens);
+  const uuid = req.query.uuid;
+  console.log(uuid);
+  res.json({ access_token: accessTokens[uuid] || "" });
 });
 
 app.get("/api/seek", (req, res) => {
@@ -110,6 +115,9 @@ app.get("/api/seek", (req, res) => {
   });
 });
 
-app.listen(port, () => {
+const server = http.Server(app);
+socket.initWs(server);
+
+server.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
 });
