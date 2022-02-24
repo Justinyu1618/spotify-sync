@@ -1,8 +1,5 @@
-import axios from "axios";
 import React, { FC, useState, useEffect } from "react";
 import "rc-slider/assets/index.css";
-import Request from "./utils/request";
-import { Slider } from "@mui/material";
 import PlaybackSlider from "./Slider";
 import { initSocket, sendMessage, ws } from "./client-socket";
 

@@ -12,7 +12,7 @@ function App() {
 
   useEffect(() => {
     window.localStorage.setItem("spotify-uuid", uuid);
-  }, []);
+  }, [uuid]);
 
   useEffect(() => {
     async function getToken() {
@@ -24,7 +24,7 @@ function App() {
     }
 
     getToken();
-  }, []);
+  }, [uuid]);
 
   return (
     <>
