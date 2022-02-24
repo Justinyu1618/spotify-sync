@@ -15,8 +15,11 @@ const WebPlayback: FC<WebPlaybackProps> = ({ uuid, token }) => {
   const [currentTrack, setTrack] = useState<Spotify.Track>();
   const [currentPosition, setCurrentPosition] = useState<number>(0);
   const [deviceId, setDeviceId] = useState("");
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
+    console.log(window.Spotify);
+
     window.onSpotifyWebPlaybackSDKReady = () => {
       const player: Spotify.Player = new window.Spotify.Player({
         name: "Web Playback SDK",
@@ -59,9 +62,23 @@ const WebPlayback: FC<WebPlaybackProps> = ({ uuid, token }) => {
         });
       });
 
-      player.connect();
+      setIsReady(true);
     };
+
+    if (!window.Spotify) {
+      const scriptTag = document.createElement("script");
+      scriptTag.src = "https://sdk.scdn.co/spotify-player.js";
+
+      document.head.appendChild(scriptTag);
+    }
   }, [token]);
+
+  useEffect(() => {
+    if (isReady) {
+      console.log("CONNECTING TO PLAYER");
+      player?.connect();
+    }
+  }, [isReady, player]);
 
   useEffect(() => {
     initSocket();
