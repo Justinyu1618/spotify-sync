@@ -59,7 +59,6 @@ const config: Configuration = {
     new HtmlWebpackPlugin({
       template: "src/index.html",
     }),
-    new EnvironmentPlugin(["WS_URL_PROD", "NODE_ENV", "WS_URL_DEV"]),
   ],
 };
 

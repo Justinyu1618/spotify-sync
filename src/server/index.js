@@ -127,7 +127,7 @@ app.get("/api/seek", (req, res) => {
 const server = http.Server(app);
 const wss = socket.initWs(server);
 
-console.log("AHHHH", wss.address());
+// console.log("AHHHH", wss.address());
 
 server.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);
