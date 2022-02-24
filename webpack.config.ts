@@ -2,6 +2,7 @@ import path from "path";
 import { Configuration } from "webpack";
 import * as webpackDevServer from "webpack-dev-server";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 
 const config: Configuration = {
   entry: "./src/index.tsx",
@@ -52,6 +53,11 @@ const config: Configuration = {
       },
     },
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "src/index.html",
+    }),
+  ],
 };
 
 export default config;
