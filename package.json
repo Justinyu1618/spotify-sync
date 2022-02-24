@@ -38,7 +38,7 @@
     "server": "node src/server",
     "build": "webpack --mode production",
     "dev": "run-p server start",
-    "prod": "NODE_ENV=production npm run build && node src/server"
+    "prod": "NODE_ENV=production node src/server"
   },
   "eslintConfig": {
     "extends": [
