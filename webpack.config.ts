@@ -1,7 +1,10 @@
 import path from "path";
-import { Configuration } from "webpack";
+import { Configuration, EnvironmentPlugin } from "webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import * as webpackDevServer from "webpack-dev-server";
+import dotenv from "dotenv";
+
+dotenv.config({ path: __dirname + "/.env" });
 
 const config: Configuration = {
   entry: "./src/index.tsx",
@@ -56,6 +59,7 @@ const config: Configuration = {
     new HtmlWebpackPlugin({
       template: "src/index.html",
     }),
+    new EnvironmentPlugin({ PORT: 5000 }),
   ],
 };
 

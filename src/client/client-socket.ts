@@ -1,4 +1,6 @@
-const host = `ws://localhost:5000`;
+const port = process.env.PORT || 5000;
+const host = `ws://localhost:${port}`;
+console.log("ws: ", host);
 export let ws = new WebSocket(host);
 
 export const initSocket = () => {
