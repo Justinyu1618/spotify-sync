@@ -4,12 +4,17 @@ const axios = require("axios");
 const { v4: uuidv4 } = require("uuid");
 const http = require("http");
 const socket = require("./socket");
+const path = require("path");
 const port = 5000;
 
 dotenv.config();
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
+const BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.BASE_URL_PROD
+    : process.env.BASE_URL_DEV;
 
 const app = express();
 
@@ -47,6 +52,8 @@ function handleErrors(error) {
   console.log(error.config);
 }
 
+app.use(express.static(path.join(__dirname, "..", "..", "build")));
+
 app.get("/auth/login", (req, res) => {
   console.log("LOGIN");
   const scope = "streaming user-read-email user-read-private";
@@ -54,7 +61,7 @@ app.get("/auth/login", (req, res) => {
     response_type: "code",
     client_id: CLIENT_ID,
     scope: scope,
-    redirect_uri: "http://localhost:3000/auth/callback",
+    redirect_uri: `${BASE_URL}/auth/callback`,
     state: req.query.uuid,
   });
 
@@ -71,7 +78,7 @@ app.get("/auth/callback", (req, res) => {
   console.log(code, uuid);
   const requestBody = new URLSearchParams({
     code: code,
-    redirect_uri: "http://localhost:3000/auth/callback",
+    redirect_uri: `${BASE_URL}/auth/callback`,
     grant_type: "authorization_code",
   });
 

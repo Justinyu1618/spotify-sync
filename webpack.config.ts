@@ -52,14 +52,6 @@ const config: Configuration = {
       },
     },
   },
-  // plugins: [
-  //   new ForkTsCheckerWebpackPlugin({
-  //     async: false,
-  //     eslint: {
-  //       files: "./src/**/*",
-  //     },
-  //   }),
-  // ],
 };
 
 export default config;
