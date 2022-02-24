@@ -90,7 +90,7 @@ const WebPlayback: FC<WebPlaybackProps> = ({ uuid, token }) => {
       const { event, info } = JSON.parse(msg.data);
       switch (event) {
         case "serverUpdatePlayback":
-          player.seek(info.currentPosition);
+          player.seek(info.pos);
           if (info.paused) {
             player.pause();
           } else {
@@ -129,7 +129,7 @@ const WebPlayback: FC<WebPlaybackProps> = ({ uuid, token }) => {
       event: "stateUpdatePlayback",
       info: {
         paused,
-        currentPosition,
+        pos: currentPosition,
       },
     });
     if (paused) {

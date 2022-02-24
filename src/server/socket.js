@@ -24,6 +24,15 @@ function handleMessage(client, payload) {
         [client.uuid]
       );
       break;
+    case "stateUpdateSeek":
+      sendToAll(
+        {
+          event: "serverUpdateSeek",
+          info: payload.info,
+        },
+        [client.uuid]
+      );
+      break;
     case "stateUpdateNextTrack":
       sendToAll(
         {
