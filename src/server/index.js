@@ -51,8 +51,10 @@ function handleErrors(error) {
   console.log(error.config);
 }
 
-app.use("/", express.static(path.join(__dirname, "..", "..", "build")));
-console.log(path.join(__dirname, "..", "..", "build"));
+app.use(express.static(path.join(__dirname, "..", "..", "build")));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../build/index.html"));
+});
 
 app.get("/auth/login", (req, res) => {
   console.log("LOGIN");
