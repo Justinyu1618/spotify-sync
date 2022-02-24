@@ -1,5 +1,9 @@
-const port = process.env.PORT || 5000;
-const host = `ws://localhost:${port}`;
+// const port = process.env.PORT || 5000;
+const host =
+  process.env.NODE_ENV === "production"
+    ? process.env.WS_URL_PROD
+    : process.env.WS_URL_DEV;
+// const host = `ws://localhost:${port}`;
 console.log("ws: ", host);
 export let ws = new WebSocket(host);
 

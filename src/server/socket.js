@@ -44,8 +44,7 @@ function handleMessage(client, payload) {
 }
 
 function initWs(server) {
-  wss = new WebSocket.Server({ server });
-  console.log("initting ws");
+  wss = new WebSocket.Server({ port: 433 });
   wss.on("connection", (client) => {
     client.uuid = uuidv4();
     clients[client.uuid] = client;
