@@ -5,10 +5,9 @@ const { v4: uuidv4 } = require("uuid");
 const http = require("http");
 const socket = require("./socket");
 const path = require("path");
-const port = 5000;
-
 dotenv.config();
 
+const PORT = process.env.PORT || 5000;
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const BASE_URL =
@@ -125,6 +124,6 @@ app.get("/api/seek", (req, res) => {
 const server = http.Server(app);
 socket.initWs(server);
 
-server.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`);
+server.listen(PORT, () => {
+  console.log(`Listening at http://localhost:${PORT}`);
 });
